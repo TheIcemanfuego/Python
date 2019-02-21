@@ -2,7 +2,7 @@
 """
 Created on Tue May  1 02:11:21 2018
 
-@author: joseph
+@author: 
 """
 
 import os, re
