@@ -1,0 +1,43 @@
+Algorithm for Henze Tool
+Types of XML Data:
+- Fondskostenklasse
+- Kickbackklasse
+
+Input Data:
+- Folder of XML files of type Fondskostenklasse and Kickbackklasse.
+- Optionally Schema files for Fondskostenklasse and Kickbackklasse XML Data.
+- Excel File containing changes to be made for Release.
+
+Output:
+- Folder containing the XML Files that are the changes for the release.
+
+
+Theory:
+Types of changes:
+1. A new XML File can be added to the collection
+2. An existing XML file can be altered.
+   Types of XML changes:
+   - A new row can be added to the existing rows.
+   - An existing row can be changed on confirmation.
+   - A row can be deleted on confirmation.
+
+NB: XML Files cannot be deleted. The collection of XML files can only grow.
+
+Step 1: Data Validation
+Validate Inputdata
+- Validate folder
+- Ensure the folder contains xml data
+- create log file for all actions 
+
+Step 2. Identify Change to be made to the collection:
+Implent alterations to existing first.
+- Define a Key to the rows of an xml.
+  Fondskostenklasse:
+  key : guel_ab
+  
+  Kickbackklasse:
+  key : guel_ab
+
+
+Step 3. Implent changes to collection
+For Each XML file
