@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-#Workday function
+#Holiday Module
 #
-#1. A Workday is a weekday that is not a holiday.
-#2. There are different types of holidays
+# 1. There are different types of holidays
 #	  i. International holidays
 #	 ii. National holidays
 #	iii. Regional holidays
 #	
-# 3. Holidays can be divided into 2 types
+# 2. Holidays can be divided into 2 types
 #	 i. Regular holidays whose date can be ascertained by a given algorithm.
 #	ii. Irregular holidays whose dates must be explicitly ascertained.
 	
@@ -85,9 +84,10 @@ def computus(year):
 def defineRegularHolidays(year):
     
     for b in [IHR, NHR, RHR]:
-        for k in b:
-            b[k] = (b[k]).replace('JJJJ', str(year))
+        for k, v in b.items():
+            b[k] = b[k].replace('JJJJ', str(year))
             b[k] = datetime.datetime.strptime(b[k], '%d-%m-%Y').date()
+           
 
 
 def defineIrregularHolidays(year):
@@ -126,17 +126,20 @@ def Holidays2DataFrame(H):
     d = []
     
     for k1, v1 in H.items():
-        #print(str(k1)+":")
         for k2, v2 in v1.items():
-            #print(str(k1)+": "+str(v2))
             for k, v in v2.items():
                 h.append(k)
                 d.append(v)
-                #print(str(k)+":  " +str(v2[k]))
     
     data = {'Holiday' : h, 'Date': d}
     return pd.DataFrame.from_dict(data)
     
+
+
+def Holidays2List(H):
+    p = Holidays2DataFrame(H)
+    
+    return p['Date'].tolist()
 
 if __name__ == "__main__":
     #y = datetime.date(('01-01-2019')
