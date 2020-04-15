@@ -31,14 +31,22 @@ class User(Base):
     def __repr__(self):
         return "<User(name)'%s', fullname='%s', password='%s')>" % (self.name, self.fullname, self.password)
 
-if __name__ == "__main__":
+    
+
+
+
+def createDB(dbname):
 
 #1 Create an engine
-    engine = create_engine('sqlite:///:memory:', echo=False)    #echo=True turns on logging
+    engine = create_engine('sqlite:///'+dbname+'.db', echo=True)    #echo=True turns on logging    
 
 #1.1 Create all engines    
     Base.metadata.create_all(engine)
-    
+
+    return engine
+
+
+def testInsert(engine):
 #2 Create a sessionmaker instance
     Session = sessionmaker()
 
@@ -47,7 +55,7 @@ if __name__ == "__main__":
 
 #3.1 Instantiate tha session
     session = Session()
-    
+
 #    print('session: '+str(session.info))
 #    print('Session: '+str(Session.object_session))
 
@@ -57,21 +65,52 @@ if __name__ == "__main__":
     session.add_all([
         User(name='wendy', fullname='Wendy Williams', password='foobar'),
         User(name='mary', fullname='Mary Contrary', password='xxg527'),
-        User(name='fred', fullname='Fred Flinktsone', password='blah')])
+        User(name='fred', fullname='Fred Flintsone', password='blah')])
 
-#4.1 Query the session
+#4.4 Commit session commeands
+    session.commit()    
+    
+
+def testQuery1(engine):
+    Session = sessionmaker()    
+
+    Session.configure(bind=engine)
+    session = Session()
+
     what_user = session.query(User).filter_by(name='ed').first()
 
-#4.2 Alter the class    
+    print(what_user)
+    
+    session.commit()
+    
+    
+def testUpdate1(engine):
+    Session = sessionmaker()    
+
+    Session.configure(bind=engine)
+    session = Session()
+
+    ed_user = session.query(User).filter_by(name='ed').first()
+
     ed_user.password = 'f8s7ccs'
 
 #4.3 Query the session to find altered instances
-    print(session.dirty)    
+    print(session.dirty)        
     
-#4.4 Commit session commeands
-    session.commit()    
-#5 Issue Commands during a session
+    session.commit()
 
+
+    
+if __name__ == "__main__":
+
+    engine = createDB('alchemy')
+    
+    testInsert(engine)
+    testQuery1(engine)
+    engine.echo = False
+    testUpdate1(engine)
+    testQuery1(engine)
+    
    
     
     
